@@ -44,10 +44,25 @@
             width: 100%;
         }
         
-        .n8n-chat-widget .welcome-view {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+       .n8n-chat-widget .welcome-view {
+          padding: 0;           /* remove any implicit padding */
+          gap: 0;               /* no vertical gaps before header */
+          display: flex;
+          width: 100%;
+          flex-direction: column;
+          height: 100%;
+          min-width: 0;
+          box-sizing: border-box;
+        }    
+        
+        .n8n-chat-widget .welcome-view .new-conversation {
+          flex: 1;                        /* take remaining space below header */
+          display: flex;
+          flex-direction: column;
+          justify-content: center;        /* vertical center */
+          align-items: center;            /* horizontal center */
+          padding: 40px 20px;
+          text-align: center;
         }
         
         .n8n-chat-widget .chat-view {
@@ -65,78 +80,72 @@
         }
         
         .n8n-chat-widget .brand-header {
+            padding: 16px 0px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(133, 79, 255, 0.1);
+            background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
+            color: white;
+            flex-shrink: 0;
+            min-height: 70px;
+            max-height: 70px;
+            width: 100%;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+          .n8n-chat-widget .brand-header .brand-content {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 16px;
-            border-bottom: 1px solid rgba(133, 79, 255, 0.1);
-            position: relative;
-            padding-right: 56px;            /* reserve space for the X */
-            text-align: left;               /* neutralize any inherited centering */
-        }
-        
-        .n8n-chat-widget .brand-header span {
-            flex: 1;                        /* take remaining space */
-            display: block;
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--chat--color-font);
-            text-align: left;               /* ensure left alignment */
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .n8n-chat-widget .close-button {
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 32px;
-            height: 32px;
+            flex: 1;
+            min-width: 0;
+            padding-left: 20px;
+       	 }
+         
+          .n8n-chat-widget .close-button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: none;
-            border: 0;
-            color: var(--chat--color-font);
-            cursor: pointer;
-            font-size: 20px;
-            line-height: 1;
-            opacity: 0.7;
-            transition: opacity 0.2s ease;
+            transition: opacity 0.2s;
+            font-size: 18px;
+            opacity: 0.8;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-right: 20px;
         }
         
-        .n8n-chat-widget .close-button:hover { 
-            opacity: 1; 
-        }
-        
-        .n8n-chat-widget .close-button:focus-visible {
-            outline: 2px solid var(--chat--color-primary);
-            outline-offset: 2px;
+        .n8n-chat-widget .close-button:hover {
+            opacity: 1;
         }
         
         .n8n-chat-widget .brand-header .logo {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px;
             color: white;
-            flex: 0 0 40px;                 /* don't shrink; fixed width */
-            overflow: hidden;               /* hide overflow if image inside */
+            flex-shrink: 0;
         }
         
         .n8n-chat-widget .brand-header .logo img {
-            width: 100%;
-            height: 100%;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             object-fit: cover;
-            display: block;
         }
         
         .n8n-chat-widget .brand-header .info {
@@ -211,26 +220,38 @@
             margin: 0;
         }
         
-        .n8n-chat-widget .chat-interface {
-            display: none;
-            flex-direction: column;
-            height: 100%;
-            width: 100%;
+        .n8n-chat-widget .chat-view {
+            display: none !important;
+            flex-direction: column !important;
+            height: 100% !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            box-sizing: border-box !important;
         }
         
-        .n8n-chat-widget .chat-interface.active {
-            display: flex;
+        .n8n-chat-widget .chat-view.active {
+            display: flex !important;
         }
         
         .n8n-chat-widget .chat-messages {
             flex: 1;
             overflow-y: auto;
+            overflow-x: hidden;
             padding: 20px;
+            margin: 0;
             background: var(--chat--color-background);
             display: flex;
             flex-direction: column;
             gap: 12px;
             min-height: 0;
+            width: 100%;
+            box-sizing: border-box;
         }
         
         .n8n-chat-widget .chat-message {
@@ -261,16 +282,20 @@
         }
         
         .n8n-chat-widget .chat-input {
-            padding: 20px;
+            /* match chat-messages spacing/box model */
             background: var(--chat--color-background);
+            padding: 20px;
+            margin: 0;
             border-top: 1px solid rgba(133, 79, 255, 0.1);
             flex-shrink: 0;
-        }
+            width: 100%;
+            box-sizing: border-box;
+       }
         
         .n8n-chat-widget .input-container {
             display: flex;
             gap: 8px;
-            align-items: flex-end;
+            align-items: center; /* vertical align like messages’ baseline */
         }
         
         .n8n-chat-widget .chat-input textarea {
@@ -447,6 +472,12 @@
     widgetContainer.style.setProperty('--n8n-chat-background-color', config.style.backgroundColor);
     widgetContainer.style.setProperty('--n8n-chat-font-color', config.style.fontColor);
     
+    // Store colors for direct application
+    const primaryColor = config.style.primaryColor || '#854fff';
+    const secondaryColor = config.style.secondaryColor || '#6b3fd4';
+    const backgroundColor = config.style.backgroundColor || '#ffffff';
+    const fontColor = config.style.fontColor || '#333333';
+    
     const chatContainer = document.createElement('div');
     chatContainer.className = `chat-container${config.style.position === 'left' ? ' position-left' : ''}`;
     
@@ -458,10 +489,12 @@
     const newConversationHTML = `
         <div class="welcome-view">
             <div class="brand-header">
-                <div class="logo">${logoElement}</div>
-                <div class="info">
-                    <h3>${config.branding.name}</h3>
-                    <p>${config.branding.responseTimeText}</p>
+                <div class="brand-content">
+                    <div class="logo">${logoElement}</div>
+                    <div class="info">
+                        <h3>${config.branding.name}</h3>
+                        <p>${config.branding.responseTimeText}</p>
+                    </div>
                 </div>
                 <button class="close-button">×</button>
             </div>
@@ -481,20 +514,26 @@
     const chatInterfaceHTML = `
         <div class="chat-view">
             <div class="brand-header">
-                <div class="logo">${logoElement}</div>
-                <div class="info">
-                    <h3>${config.branding.name}</h3>
-                    <p>${config.branding.responseTimeText}</p>
+                <div class="brand-content">
+                    <div class="logo">${logoElement}</div>
+                    <div class="info">
+                        <h3>${config.branding.name}</h3>
+                        <p>${config.branding.responseTimeText}</p>
+                    </div>
                 </div>
                 <button class="close-button">×</button>
             </div>
             <div class="chat-messages"></div>
-            <div class="chat-input">
-                <div class="input-container">
-                    <textarea placeholder="Type your message here..." rows="1"></textarea>
-                    <button class="send-button">→</button>
-                </div>
-            </div>
+           <div class="chat-input">
+      <div class="input-container">
+        <textarea placeholder="Type your message here..." rows="1"></textarea>
+        <button class="send-button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="20" height="20" fill="currentColor">
+            <path d="M536.4-26.3c9.8-3.5 20.6-1 28 6.3s9.8 18.2 6.3 28l-178 496.9c-5 13.9-18.1 23.1-32.8 23.1-14.2 0-27-8.6-32.3-21.7l-64.2-158c-4.5-11-2.5-23.6 5.2-32.6l94.5-112.4c5.1-6.1 4.7-15-.9-20.6s-14.6-6-20.6-.9L229.2 276.1c-9.1 7.6-21.6 9.6-32.6 5.2L38.1 216.8c-13.1-5.3-21.7-18.1-21.7-32.3 0-14.7 9.2-27.8 23.1-32.8l496.9-178z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
             <div class="chat-footer">
                 <a href="${config.branding.poweredBy.link}" target="_blank">${config.branding.poweredBy.text}</a>
             </div>
@@ -517,6 +556,38 @@
     widgetContainer.appendChild(chatContainer);
     widgetContainer.appendChild(toggleButton);
     document.body.appendChild(widgetContainer);
+    
+    // Apply colors directly to elements after they're created
+    function applyColors() {
+        const gradient = `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`;
+        
+        // Apply to headers
+        const headers = widgetContainer.querySelectorAll('.brand-header');
+        headers.forEach(header => {
+            header.style.background = gradient;
+        });
+        
+        // Apply to buttons
+        const newChatBtn = widgetContainer.querySelector('.new-chat-btn');
+        if (newChatBtn) newChatBtn.style.background = gradient;
+        
+        const sendButton = widgetContainer.querySelector('.send-button');
+        if (sendButton) sendButton.style.background = gradient;
+        
+        // Apply to toggle button
+        toggleButton.style.background = gradient;
+        
+        // Apply to footer link
+        const footerLink = widgetContainer.querySelector('.chat-footer a');
+        if (footerLink) footerLink.style.color = primaryColor;
+        
+        // Set container background
+        const container = widgetContainer.querySelector('.chat-container');
+        if (container) container.style.backgroundColor = backgroundColor;
+    }
+    
+    // Apply colors immediately
+    applyColors();
     
     // Get elements
     const welcomeView = chatContainer.querySelector('.welcome-view');
@@ -557,6 +628,10 @@
             welcomeView.classList.add('hidden');
             chatView.classList.add('active');
             
+            // Force layout recalculation
+            chatView.style.display = 'flex';
+            chatView.offsetHeight; // Trigger reflow
+            
             const response = await fetch(config.webhook.url, {
                 method: 'POST',
                 headers: {
@@ -573,16 +648,21 @@
             botMessageDiv.textContent = Array.isArray(responseData) ? responseData[0].output : responseData.output;
             messagesContainer.appendChild(botMessageDiv);
             
+            // Force another layout recalculation after adding message
+            messagesContainer.offsetHeight;
+            
             // Scroll to bottom
             setTimeout(() => {
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }, 50);
+            }, 100);
             
         } catch (error) {
             console.error('Error:', error);
             // Still switch views even on error
             welcomeView.classList.add('hidden');
             chatView.classList.add('active');
+            chatView.style.display = 'flex';
+            chatView.offsetHeight; // Trigger reflow
         }
     }
     
@@ -601,6 +681,8 @@
         const userMessageDiv = document.createElement('div');
         userMessageDiv.className = 'chat-message user';
         userMessageDiv.textContent = message;
+        // Apply user message color
+        userMessageDiv.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`;
         messagesContainer.appendChild(userMessageDiv);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
         
