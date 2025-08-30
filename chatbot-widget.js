@@ -37,6 +37,33 @@
             display: flex;
         }
         
+        .n8n-chat-widget .chat-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+        
+        .n8n-chat-widget .welcome-view {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .n8n-chat-widget .chat-view {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .n8n-chat-widget .chat-view.active {
+            display: flex;
+        }
+        
+        .n8n-chat-widget .welcome-view.hidden {
+            display: none;
+        }
+        
         .n8n-chat-widget .brand-header {
             padding: 20px;
             display: flex;
@@ -114,14 +141,13 @@
         }
         
         .n8n-chat-widget .new-conversation {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
             text-align: center;
-            width: calc(100% - 40px);
-            max-width: 300px;
         }
         
         .n8n-chat-widget .welcome-text {
@@ -172,11 +198,6 @@
             flex-direction: column;
             height: 100%;
             width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
         }
         
         .n8n-chat-widget .chat-interface.active {
@@ -417,28 +438,30 @@
         : config.branding.name.substring(0, 2).toUpperCase();
     
     const newConversationHTML = `
-        <div class="brand-header">
-            <div class="logo">${logoElement}</div>
-            <div class="info">
-                <h3>${config.branding.name}</h3>
-                <p>${config.branding.responseTimeText}</p>
+        <div class="welcome-view">
+            <div class="brand-header">
+                <div class="logo">${logoElement}</div>
+                <div class="info">
+                    <h3>${config.branding.name}</h3>
+                    <p>${config.branding.responseTimeText}</p>
+                </div>
+                <button class="close-button">×</button>
             </div>
-            <button class="close-button">×</button>
-        </div>
-        <div class="new-conversation">
-            <h2 class="welcome-text">${config.branding.welcomeText}</h2>
-            <button class="new-chat-btn">
-                <svg class="message-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/>
-                </svg>
-                Send us a message
-            </button>
-            <p class="response-text">${config.branding.responseTimeText}</p>
+            <div class="new-conversation">
+                <h2 class="welcome-text">${config.branding.welcomeText}</h2>
+                <button class="new-chat-btn">
+                    <svg class="message-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/>
+                    </svg>
+                    Send us a message
+                </button>
+                <p class="response-text">${config.branding.responseTimeText}</p>
+            </div>
         </div>
     `;
     
     const chatInterfaceHTML = `
-        <div class="chat-interface">
+        <div class="chat-view">
             <div class="brand-header">
                 <div class="logo">${logoElement}</div>
                 <div class="info">
@@ -460,7 +483,14 @@
         </div>
     `;
     
-    chatContainer.innerHTML = newConversationHTML + chatInterfaceHTML;
+    const chatContainerHTML = `
+        <div class="chat-content">
+            ${newConversationHTML}
+            ${chatInterfaceHTML}
+        </div>
+    `;
+    
+    chatContainer.innerHTML = chatContainerHTML;
     
     const toggleButton = document.createElement('button');
     toggleButton.className = `chat-toggle${config.style.position === 'left' ? ' position-left' : ''}`;
@@ -471,8 +501,9 @@
     document.body.appendChild(widgetContainer);
     
     // Get elements
+    const welcomeView = chatContainer.querySelector('.welcome-view');
+    const chatView = chatContainer.querySelector('.chat-view');
     const newChatBtn = chatContainer.querySelector('.new-chat-btn');
-    const chatInterface = chatContainer.querySelector('.chat-interface');
     const messagesContainer = chatContainer.querySelector('.chat-messages');
     const textarea = chatContainer.querySelector('textarea');
     const sendButton = chatContainer.querySelector('.send-button');
@@ -504,18 +535,9 @@
         }];
         
         try {
-            // Hide welcome screen first
-            const welcomeHeader = chatContainer.querySelector('.brand-header');
-            const welcomeScreen = chatContainer.querySelector('.new-conversation');
-            
-            if (welcomeHeader) welcomeHeader.style.display = 'none';
-            if (welcomeScreen) welcomeScreen.style.display = 'none';
-            
-            // Show chat interface
-            chatInterface.classList.add('active');
-            
-            // Force a reflow to ensure proper layout
-            chatInterface.offsetHeight;
+            // Switch views immediately
+            welcomeView.classList.add('hidden');
+            chatView.classList.add('active');
             
             const response = await fetch(config.webhook.url, {
                 method: 'POST',
@@ -533,20 +555,16 @@
             botMessageDiv.textContent = Array.isArray(responseData) ? responseData[0].output : responseData.output;
             messagesContainer.appendChild(botMessageDiv);
             
-            // Ensure messages container is properly scrolled
+            // Scroll to bottom
             setTimeout(() => {
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }, 50);
             
         } catch (error) {
             console.error('Error:', error);
-            // Still show the interface even if there's an error
-            const welcomeHeader = chatContainer.querySelector('.brand-header');
-            const welcomeScreen = chatContainer.querySelector('.new-conversation');
-            
-            if (welcomeHeader) welcomeHeader.style.display = 'none';
-            if (welcomeScreen) welcomeScreen.style.display = 'none';
-            chatInterface.classList.add('active');
+            // Still switch views even on error
+            welcomeView.classList.add('hidden');
+            chatView.classList.add('active');
         }
     }
     
