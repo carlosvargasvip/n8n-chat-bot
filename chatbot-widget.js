@@ -65,39 +65,55 @@
         }
         
         .n8n-chat-widget .brand-header {
-            padding: 20px;
             display: flex;
             align-items: center;
             gap: 12px;
+            padding: 16px;
             border-bottom: 1px solid rgba(133, 79, 255, 0.1);
             position: relative;
-            background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
-            color: white;
-            flex-shrink: 0;
+            padding-right: 56px;            /* reserve space for the X */
+            text-align: left;               /* neutralize any inherited centering */
         }
         
+        .n8n-chat-widget .brand-header span {
+            flex: 1;                        /* take remaining space */
+            display: block;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--chat--color-font);
+            text-align: left;               /* ensure left alignment */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         .n8n-chat-widget .close-button {
             position: absolute;
             right: 16px;
             top: 50%;
             transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            padding: 4px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.2s;
+            background: none;
+            border: 0;
+            color: var(--chat--color-font);
+            cursor: pointer;
             font-size: 20px;
-            opacity: 0.8;
-            width: 24px;
-            height: 24px;
+            line-height: 1;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
         }
         
-        .n8n-chat-widget .close-button:hover {
-            opacity: 1;
+        .n8n-chat-widget .close-button:hover { 
+            opacity: 1; 
+        }
+        
+        .n8n-chat-widget .close-button:focus-visible {
+            outline: 2px solid var(--chat--color-primary);
+            outline-offset: 2px;
         }
         
         .n8n-chat-widget .brand-header .logo {
@@ -111,14 +127,16 @@
             font-weight: bold;
             font-size: 16px;
             color: white;
-            flex-shrink: 0;
+            flex: 0 0 40px;                 /* don't shrink; fixed width */
+            overflow: hidden;               /* hide overflow if image inside */
         }
         
         .n8n-chat-widget .brand-header .logo img {
-            width: 40px;
-            height: 40px;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             object-fit: cover;
+            display: block;
         }
         
         .n8n-chat-widget .brand-header .info {
