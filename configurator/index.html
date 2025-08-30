@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Widget Configurator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="configurator">
+        <div class="container">
+            <div class="config-panel">
+                <h1>🚀 Chat Widget Configurator</h1>
+                
+                <!-- Webhook Settings Section -->
+                <div class="section">
+                    <h2>🔗 Webhook Settings</h2>
+                    <div class="form-group">
+                        <label for="webhookUrl">Webhook URL</label>
+                        <input type="url" id="webhookUrl" placeholder="https://your-n8n-instance.com/webhook/..." value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="webhookRoute">Route</label>
+                        <input type="text" id="webhookRoute" placeholder="general" value="general">
+                    </div>
+                </div>
+
+                <!-- Branding Section -->
+                <div class="section">
+                    <h2>🏢 Branding</h2>
+                    <div class="form-group">
+                        <label for="logoUrl">Company Logo URL</label>
+                        <input type="url" id="logoUrl" placeholder="https://your-site.com/logo.png" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="companyName">Company Name</label>
+                        <input type="text" id="companyName" placeholder="Your Company" value="Your Company">
+                    </div>
+                    <div class="form-group">
+                        <label for="welcomeText">Welcome Message</label>
+                        <input type="text" id="welcomeText" placeholder="Hi 👋, how can we help?" value="Hi 👋, how can we help?">
+                    </div>
+                    <div class="form-group">
+                        <label for="responseTime">Response Time Message</label>
+                        <input type="text" id="responseTime" placeholder="We typically respond right away" value="We typically respond right away">
+                    </div>
+                </div>
+
+                <!-- Styling Section -->
+                <div class="section">
+                    <h2>🎨 Styling</h2>
+                    <div class="form-group">
+                        <label for="primaryColor">Primary Color</label>
+                        <div class="color-group">
+                            <input type="color" id="primaryColor" value="#854fff">
+                            <span id="primaryColorValue">#854fff</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="secondaryColor">Secondary Color</label>
+                        <div class="color-group">
+                            <input type="color" id="secondaryColor" value="#6b3fd4">
+                            <span id="secondaryColorValue">#6b3fd4</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="backgroundColor">Background Color</label>
+                        <div class="color-group">
+                            <input type="color" id="backgroundColor" value="#ffffff">
+                            <span id="backgroundColorValue">#ffffff</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fontColor">Font Color</label>
+                        <div class="color-group">
+                            <input type="color" id="fontColor" value="#333333">
+                            <span id="fontColorValue">#333333</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Widget Position</label>
+                        <div class="position-selector">
+                            <div class="position-option active" data-position="right">Right</div>
+                            <div class="position-option" data-position="left">Left</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate Button -->
+                <button class="generate-btn" id="generateBtn">✨ Generate Widget Code</button>
+
+                <!-- Code Output -->
+                <div id="codeOutput" class="code-output" style="display: none;"></div>
+                <button id="copyBtn" class="copy-btn" style="display: none;">📋 Copy Code</button>
+
+                <!-- Live Preview Section -->
+                <div class="preview-section">
+                    <div class="preview-title">🔮 Live Preview</div>
+                    
+                    <!-- Widget Preview -->
+                    <div id="widgetPreview" class="widget-preview">
+                        <!-- Chat Window -->
+                        <div id="chatWindow" class="chat-window">
+                            <!-- Chat Header -->
+                            <div id="chatHeader" class="chat-header">
+                                <div id="chatLogo" class="chat-logo">YC</div>
+                                <div class="chat-info">
+                                    <h3 id="previewCompanyName">Your Company</h3>
+                                    <p id="previewResponseTime">We typically respond right away</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Chat Body -->
+                            <div class="chat-body" id="chatBody">
+                                <div class="chat-message" id="previewWelcomeMessage">Hi 👋, how can we help?</div>
+                            </div>
+                            
+                            <!-- Chat Input -->
+                            <div class="chat-input">
+                                <div class="input-container">
+                                    <input type="text" placeholder="Type your message...">
+                                    <button id="sendBtn" class="send-btn">➤</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Chat Footer -->
+                            <div class="chat-footer">
+                                <a href="https://n8n.partnerlinks.io/carlosvargas?utm_source=carlosvargas.com" target="_blank" class="n8n-link">
+                                    Powered by n8n
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Chat Button -->
+                        <button id="chatButton" class="chat-button">💬</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
