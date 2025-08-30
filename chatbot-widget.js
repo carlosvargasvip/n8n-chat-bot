@@ -172,6 +172,11 @@
             flex-direction: column;
             height: 100%;
             width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
         }
         
         .n8n-chat-widget .chat-interface.active {
@@ -499,6 +504,19 @@
         }];
         
         try {
+            // Hide welcome screen first
+            const welcomeHeader = chatContainer.querySelector('.brand-header');
+            const welcomeScreen = chatContainer.querySelector('.new-conversation');
+            
+            if (welcomeHeader) welcomeHeader.style.display = 'none';
+            if (welcomeScreen) welcomeScreen.style.display = 'none';
+            
+            // Show chat interface
+            chatInterface.classList.add('active');
+            
+            // Force a reflow to ensure proper layout
+            chatInterface.offsetHeight;
+            
             const response = await fetch(config.webhook.url, {
                 method: 'POST',
                 headers: {
@@ -509,19 +527,26 @@
             
             const responseData = await response.json();
             
-            // Hide welcome screen and show chat interface
-            chatContainer.querySelector('.brand-header').style.display = 'none';
-            chatContainer.querySelector('.new-conversation').style.display = 'none';
-            chatInterface.classList.add('active');
-            
             // Add initial bot message
             const botMessageDiv = document.createElement('div');
             botMessageDiv.className = 'chat-message bot';
             botMessageDiv.textContent = Array.isArray(responseData) ? responseData[0].output : responseData.output;
             messagesContainer.appendChild(botMessageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Ensure messages container is properly scrolled
+            setTimeout(() => {
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 50);
+            
         } catch (error) {
             console.error('Error:', error);
+            // Still show the interface even if there's an error
+            const welcomeHeader = chatContainer.querySelector('.brand-header');
+            const welcomeScreen = chatContainer.querySelector('.new-conversation');
+            
+            if (welcomeHeader) welcomeHeader.style.display = 'none';
+            if (welcomeScreen) welcomeScreen.style.display = 'none';
+            chatInterface.classList.add('active');
         }
     }
     
